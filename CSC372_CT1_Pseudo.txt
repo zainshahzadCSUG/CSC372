@@ -1,0 +1,98 @@
+CREATE class BankAccount
+-> declare firstName as String
+-> declare lastName as String
+-> declare accountID as Integer
+-> declare balance as Double
+
+CONSTRUCTOR BankAccount()
+-> set balance = 0.0
+
+METHOD deposit(amount)
+-> balance = balance + amount
+
+METHOD withdrawal(amount)
+-> balance = balance - amount
+
+METHOD setFirstName(firstName)
+-> store firstName in account
+
+METHOD getFirstName()
+-> return firstName
+
+METHOD setLastName(lastName)
+-> store lastName in account
+
+METHOD getLastName()
+-> return lastName
+
+METHOD setAccountID(accountID)
+-> store accountID in account
+
+METHOD getAccountID()
+-> return accountID
+
+METHOD getBalance()
+-> return balance
+
+METHOD accountSummary()
+-> display "Account Summary"
+-> display "Name: firstName lastName"
+-> display "Account ID: accountID"
+-> display "Balance: $" + balance
+
+CREATE class CheckingAccount EXTENDS BankAccount
+-> declare interestRate as Double
+-> declare constant OVERDRAFT_FEE = 30.0
+
+CONSTRUCTOR CheckingAccount(interestRate)
+-> call BankAccount constructor
+-> set this.interestRate = interestRate
+
+METHOD processWithdrawal(amount)
+-> balance = balance - amount
+
+IF balance < 0
+-> balance = balance - OVERDRAFT_FEE
+-> display "Overdraft occurred. $30 fee applied."
+
+-> display "Current Balance: $" + balance
+
+METHOD displayAccount()
+-> call accountSummary()
+-> display "Interest Rate: " + interestRate + "%"
+
+CREATE class TestAccount
+
+MAIN
+-> create Scanner for user input
+-> create CheckingAccount account with interest rate 2.5
+
+-> display "Enter first name:"
+-> read input
+-> call account.setFirstName(input)
+
+-> display "Enter last name:"
+-> read input
+-> call account.setLastName(input)
+
+-> display "Enter account ID:"
+-> read input
+-> call account.setAccountID(input)
+
+-> display "Enter deposit amount:"
+-> read input
+-> call account.deposit(input)
+
+-> display "Enter withdrawal amount:"
+-> read input
+-> store value as w
+
+-> call account.displayAccount()
+
+-> display "Processing withdrawal..."
+-> call account.processWithdrawal(w)
+
+-> display "Final Account Details:"
+-> call account.displayAccount()
+
+-> close Scanner
